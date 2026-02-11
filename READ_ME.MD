@@ -21,9 +21,11 @@ All implementations are written exclusively in Rust to practice memory managemen
 ## Usage
 To run the tests and ensure everything is working correctly, use Cargo:
 
-git clone https://github.com/Malolpv/data_structures.git
-cd data_structures
-cargo test
+``git clone https://github.com/Malolpv/data_structures.git``
+
+``cd data_structures``
+
+``cargo test``
 
 ## Author
 Malolpv
