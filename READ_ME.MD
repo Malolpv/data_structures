@@ -13,6 +13,7 @@ All implementations are written exclusively in Rust to practice memory managemen
 - Linked List (Still WIP)
 
 ## Incoming structures
+- Queue (Non Blockin, Blocking and Thread Safe)
 - BST (Binary Search Tree)
 - HashTable (Sync and Concurrent)
 - DLL (Doubly Linked List)
