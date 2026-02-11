@@ -65,14 +65,21 @@ impl<T> SinglyLinkedList<T> {
     pub fn push_back(&mut self, node: Box<Node<T>>) {
         let mut current = self.head.as_mut();
 
-        while let Some(mut n) = current {
-            if n.next.is_none() {
-                n.next = Some(node);
-                return;
-            }
+        if current.is_none() {
+            self.head = Some(node);
+        } else {
+            while let Some(n) = current {
+                if n.next.is_none() {
+                    n.next = Some(node);
+                    break;
+                }
 
-            current = n.next.as_mut();
+                current = n.next.as_mut();
+            }
         }
+
+        // Increment len counter
+        self.len += 1;
     }
 
     /// Look at the first node value without modifying it
@@ -165,5 +172,147 @@ impl<T: Display> SinglyLinkedList<T> {
         }
         println!("List contains: {} element(s)", self.len);
         println!("{} None", string)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+
+    use super::*;
+
+    #[test]
+    fn len_empty_list() {
+        // Arrange
+        let list = SinglyLinkedList::<u16>::new();
+
+        // Act
+        let result = list.len();
+
+        // Assert
+        assert_eq!(result, 0);
+    }
+
+    #[test]
+    fn len_non_empty_list() {
+        // Arrange
+        let mut list = SinglyLinkedList::new();
+        let n1 = Node::new(1);
+        let n2 = Node::new(2);
+        let n3 = Node::new(3);
+
+        list.push_front(Box::new(n3));
+        list.push_front(Box::new(n2));
+        list.push_front(Box::new(n1));
+
+        let _ = list.pop_front();
+
+        // Act
+        let result = list.len();
+
+        // Assert
+        assert_eq!(result, 2);
+    }
+
+    #[test]
+    fn peek_empty_list() {
+        // Arrange
+        let list = SinglyLinkedList::<u16>::new();
+
+        // Act
+        let result = list.peek();
+
+        // Assert
+        assert_eq!(list.len(), 0);
+        assert_eq!(result, None);
+    }
+
+    #[test]
+    fn peek_non_empty_list() {
+        // Arrange
+        let mut list = SinglyLinkedList::new();
+        let n1 = Node::new(1);
+        let n2 = Node::new(2);
+        let n3 = Node::new(3);
+
+        list.push_front(Box::new(n3));
+        list.push_front(Box::new(n2));
+        list.push_front(Box::new(n1));
+
+        // Act
+        let result = list.peek();
+
+        // Assert
+        assert_eq!(list.len(), 3);
+        assert_eq!(result, Some(&1));
+    }
+
+    #[test]
+    fn push_front() {
+        // Arrange
+        let node: Node<u16> = Node::new(10);
+        let node2: Node<u16> = Node::new(15);
+        let mut list = SinglyLinkedList::new();
+
+        // Act
+        list.push_front(Box::new(node));
+        list.push_front(Box::new(node2));
+
+        // Assert
+        assert_eq!(list.len(), 2);
+        assert_eq!(list.peek(), Some(&15));
+    }
+
+    #[test]
+    fn test_pop_front() {
+        // Arrange
+        let mut list = SinglyLinkedList::new();
+        list.push_front(Box::new(Node::new(1)));
+        list.push_front(Box::new(Node::new(2)));
+
+        // Act & Assert
+        assert_eq!(list.pop_front(), Some(2));
+        assert_eq!(list.pop_front(), Some(1));
+        assert_eq!(list.pop_front(), None);
+        assert_eq!(list.len(), 0);
+    }
+
+    #[test]
+    fn test_remove_missing_value() {
+        // Arrange
+        let mut list = SinglyLinkedList::new();
+        list.push_front(Box::new(Node::new(1)));
+
+        // Act
+        let result = list.remove_by_value(&42);
+
+        // Assert
+        assert!(result.is_none());
+        assert_eq!(list.len(), 1);
+    }
+
+    #[test]
+    fn test_empty_list_operations() {
+        // Arrange
+        let mut list: SinglyLinkedList<i32> = SinglyLinkedList::new();
+
+        // Act & Assert
+        assert_eq!(list.pop_front(), None);
+        assert_eq!(list.len(), 0);
+        assert_eq!(list.peek(), None);
+    }
+
+    #[test]
+    fn test_push_back() {
+        // Arrange
+        let mut list = SinglyLinkedList::new();
+
+        // Act
+        list.push_back(Box::new(Node::new(5)));
+        list.push_back(Box::new(Node::new(15)));
+
+        // Assert
+        assert_eq!(list.len(), 2);
+        assert_eq!(list.pop_front(), Some(5));
+        assert_eq!(list.pop_front(), Some(15));
     }
 }
