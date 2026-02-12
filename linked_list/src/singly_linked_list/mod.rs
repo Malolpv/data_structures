@@ -26,7 +26,6 @@ impl<T> SinglyLinkedList<T> {
         }
     }
 
-    #[allow(dead_code)]
     pub fn len(&self) -> usize {
         self.len
     }
@@ -159,10 +158,10 @@ impl<T> Drop for SinglyLinkedList<T> {
     }
 }
 
-/// TODO implement this :
-/// IntoIter : Consomme la liste (prend l'ownership). Rend des T.
-/// Iter : Emprunte la liste. Rend des &T.
-/// IterMut : Emprunte la liste de façon mutable. Rend des &mut T.
+// TODO implement this :
+// IntoIter : Consomme la liste (prend l'ownership). Rend des T.
+// Iter : Emprunte la liste. Rend des &T.
+// IterMut : Emprunte la liste de façon mutable. Rend des &mut T.
 
 impl<T: Display> SinglyLinkedList<T> {
     pub fn print(&self) {

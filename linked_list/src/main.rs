@@ -29,4 +29,10 @@ fn main() {
     linked_list.push_back(Box::new(Node::new(100)));
 
     linked_list.print();
+
+    linked_list.clear();
+    _ = linked_list.is_empty();
+    linked_list.len();
+    _ = linked_list.peek();
+    _ = linked_list.peek_mut();
 }
