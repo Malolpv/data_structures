@@ -135,8 +135,19 @@ impl<T: PartialEq> SinglyLinkedList<T> {
     }
 
     /// Traverse all list elements to find given value
-    pub fn contains(&self) -> bool {
-        todo!()
+    pub fn contains(&self, value: T) -> bool {
+        let mut current = &self.head;
+
+        // traverse the list
+        while let Some(node) = current {
+            // found one !
+            if node.value == value {
+                return true;
+            }
+            // keep looking
+            current = &node.next
+        }
+        false
     }
 
     /// Sort the list
@@ -396,5 +407,34 @@ mod tests {
         // Assert
         assert_eq!(list.len(), 0);
         assert_eq!(list.peek(), None);
+    }
+
+    #[test]
+    fn contains_empty_list() {
+        // Arrange
+        let list = SinglyLinkedList::<u8>::new();
+
+        // Act
+        let result = list.contains(1);
+
+        // Assert
+        assert_eq!(list.len(), 0);
+        assert!(!result);
+    }
+
+    #[test]
+    fn contains_populated_list() {
+        // Arrange
+        let mut list = SinglyLinkedList::<u8>::new();
+        list.push_front(Box::new(Node::new(1)));
+        list.push_front(Box::new(Node::new(2)));
+        list.push_front(Box::new(Node::new(3)));
+
+        // Act
+        let result = list.contains(3);
+
+        // Assert
+        assert_eq!(list.len(), 3);
+        assert!(result);
     }
 }

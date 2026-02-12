@@ -28,6 +28,8 @@ fn main() {
 
     linked_list.push_back(Box::new(Node::new(100)));
 
+    _ = linked_list.contains(100);
+
     linked_list.print();
 
     linked_list.clear();
