@@ -22,7 +22,7 @@ fn main() {
     linked_list.push_front(Box::new(Node::new(6)));
     linked_list.print();
 
-    linked_list.remove_by_value(&2);
+    linked_list.pop_by_value(&2);
 
     linked_list.print();
 

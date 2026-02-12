@@ -108,22 +108,22 @@ impl<T> SinglyLinkedList<T> {
 
 impl<T: PartialEq> SinglyLinkedList<T> {
     /// Traverse the list remove and return the first node with a matching value
-    pub fn remove_by_value(&mut self, value: &T) -> Option<Box<Node<T>>> {
+    pub fn pop_by_value(&mut self, value: &T) -> Option<T> {
         let mut current = &mut self.head;
 
-        while current.is_some() {
-            if current.as_ref().unwrap().value == *value {
-                let mut removed_node = current.take();
+        // traverse the list
+        while let Some(node) = current {
+            // Found the value
+            if node.value == *value {
+                // Swap position
+                let removed_node = current.take()?;
+                *current = removed_node.next;
 
-                if let Some(ref mut node) = removed_node {
-                    *current = node.next.take();
-                }
-
+                // Update list counter and return
                 self.len -= 1;
-                return removed_node;
+                return Some(removed_node.value);
             }
-
-            current = &mut current.as_mut().unwrap().next;
+            current = &mut current.as_mut()?.next
         }
 
         None
@@ -309,17 +309,33 @@ mod tests {
     }
 
     #[test]
-    fn test_remove_missing_value() {
+    fn test_pop_missing_value() {
         // Arrange
         let mut list = SinglyLinkedList::new();
         list.push_front(Box::new(Node::new(1)));
 
         // Act
-        let result = list.remove_by_value(&42);
+        let result = list.pop_by_value(&42);
 
         // Assert
         assert!(result.is_none());
         assert_eq!(list.len(), 1);
+    }
+
+    #[test]
+    fn test_pop_existing_value() {
+        // Arrange
+        let mut list = SinglyLinkedList::new();
+        list.push_front(Box::new(Node::new(1)));
+        list.push_front(Box::new(Node::new(2)));
+        list.push_front(Box::new(Node::new(3)));
+
+        // Act
+        let result = list.pop_by_value(&1);
+
+        // Assert
+        assert_eq!(list.len(), 2);
+        assert_eq!(result, Some(1));
     }
 
     #[test]

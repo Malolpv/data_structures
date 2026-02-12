@@ -13,7 +13,7 @@ The current implementation provides several safe operations for managing data:
 | Category   | Methods                                     | Description                                                |
 |------------|---------------------------------------------|------------------------------------------------------------|
 | Insertion  | ``push_front``, ``push_back``               | Add elements to the start or end of the list               |
-| Removal    | ``pop_front``, ``remove_by_value``          | Remove the head or search for a specific value to extract. |
+| Removal    | ``pop_front``, ``pop_by_value``          | Remove the head or search for a specific value to extract. |
 | Inspection | ``len`` ``is_empty``,``peek``, ``peek_mut`` | Access elements or metadata without consuming the list.    |
 | Utilities  | ``clear``,``print``                         | Display the list or reset its contents.                    |
 
