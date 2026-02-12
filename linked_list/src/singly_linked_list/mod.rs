@@ -58,7 +58,13 @@ impl<T> SinglyLinkedList<T> {
 
     /// Clear the list of any nodes
     pub fn clear(&mut self) {
-        todo!()
+        let mut current = self.head.take();
+
+        while let Some(mut node) = current {
+            current = node.next.take()
+        }
+
+        self.len = 0;
     }
 
     /// Push the given node to the end of the list
@@ -194,7 +200,7 @@ mod tests {
     }
 
     #[test]
-    fn len_non_empty_list() {
+    fn len_populated_list() {
         // Arrange
         let mut list = SinglyLinkedList::new();
         let n1 = Node::new(1);
@@ -229,7 +235,7 @@ mod tests {
     }
 
     #[test]
-    fn peek_non_empty_list() {
+    fn peek_populated_list() {
         // Arrange
         let mut list = SinglyLinkedList::new();
         let n1 = Node::new(1);
@@ -362,5 +368,34 @@ mod tests {
         assert_eq!(list.len(), 2);
         assert_eq!(list.pop_front(), Some(5));
         assert_eq!(list.pop_front(), Some(15));
+    }
+
+    #[test]
+    fn clear_populated_list() {
+        // Arrange
+        let mut list = SinglyLinkedList::new();
+        list.push_front(Box::new(Node::new(1)));
+        list.push_front(Box::new(Node::new(2)));
+        list.push_front(Box::new(Node::new(3)));
+
+        // Act
+        list.clear();
+
+        // Assert
+        assert_eq!(list.len(), 0);
+        assert_eq!(list.peek(), None);
+    }
+
+    #[test]
+    fn clear_empty_list() {
+        // Arrange
+        let mut list = SinglyLinkedList::<u8>::new();
+
+        // Act
+        list.clear();
+
+        // Assert
+        assert_eq!(list.len(), 0);
+        assert_eq!(list.peek(), None);
     }
 }
