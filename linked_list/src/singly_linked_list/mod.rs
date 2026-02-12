@@ -187,7 +187,7 @@ impl<T: PartialEq> SinglyLinkedList<T> {
         false
     }
 
-    /// Sort the list
+    ///TODO  Sort the list
     pub fn sort(&mut self) {
         todo!()
     }
