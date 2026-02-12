@@ -105,9 +105,46 @@ impl<T> SinglyLinkedList<T> {
         }
     }
 
-    /// Reverse the list
+    /// Reverses the list in-place.
+    ///
+    /// This operation has a time complexity of **O(n)** and a space complexity of **O(1)**,
+    /// as it only rebinds the next pointers without reallocating any nodes.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use your_crate::SinglyLinkedList;
+    ///
+    /// let mut list = SinglyLinkedList::new();
+    /// list.push(1);
+    /// list.push(2);
+    /// list.push(3);
+    ///
+    /// // List is [3, 2, 1]
+    /// list.reverse();
+    /// // List is now [1, 2, 3]
+    /// ```
     pub fn reverse(&mut self) {
-        todo!()
+        let mut prev: Option<Box<Node<T>>> = None;
+        let mut current = self.head.take();
+
+        //traverse the list
+        while let Some(mut current_node) = current {
+            //retrieve next element
+            let next = current_node.next.take();
+
+            // current node.next needs to point to the previous node
+            current_node.next = prev;
+
+            // update previous
+            prev = Some(current_node);
+
+            // current is now current.next
+            current = next;
+        }
+
+        // Update the head
+        self.head = prev
     }
 }
 
@@ -436,5 +473,68 @@ mod tests {
         // Assert
         assert_eq!(list.len(), 3);
         assert!(result);
+    }
+
+    #[test]
+    fn test_reverse_empty_list() {
+        // Arrange
+        let mut list: SinglyLinkedList<i32> = SinglyLinkedList::new();
+
+        // Act
+        list.reverse();
+
+        // Assert
+        assert!(list.is_empty());
+        assert_eq!(list.len(), 0);
+    }
+
+    #[test]
+    fn test_reverse_single_element() {
+        // Arrange
+        let mut list = SinglyLinkedList::new();
+        list.push_front(Box::new(Node::new(42)));
+
+        // Act
+        list.reverse();
+
+        // Assert
+        assert_eq!(list.len(), 1);
+        assert_eq!(list.peek(), Some(&42));
+    }
+
+    #[test]
+    fn test_reverse_multiple_elements() {
+        // Arrange
+        let mut list = SinglyLinkedList::new();
+        list.push_front(Box::new(Node::new(1)));
+        list.push_front(Box::new(Node::new(2)));
+        list.push_front(Box::new(Node::new(3)));
+
+        // Act
+        list.reverse();
+
+        // Assert
+        assert_eq!(list.len(), 3);
+        assert_eq!(list.pop_front(), Some(1));
+        assert_eq!(list.pop_front(), Some(2));
+        assert_eq!(list.pop_front(), Some(3));
+        assert_eq!(list.pop_front(), None);
+    }
+
+    #[test]
+    fn test_reverse_consistency_with_peek_mut() {
+        // Arrange
+        let mut list = SinglyLinkedList::new();
+        list.push_front(Box::new(Node::new(10)));
+        list.push_front(Box::new(Node::new(20)));
+
+        // Act
+        list.reverse();
+        if let Some(val) = list.peek_mut() {
+            *val += 5;
+        }
+
+        // Assert
+        assert_eq!(list.peek(), Some(&15));
     }
 }

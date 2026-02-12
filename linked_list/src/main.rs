@@ -19,6 +19,10 @@ fn main() {
 
     linked_list.print();
 
+    linked_list.reverse();
+
+    linked_list.print();
+
     linked_list.push_front(Box::new(Node::new(6)));
     linked_list.print();
 
