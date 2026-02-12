@@ -189,6 +189,7 @@ mod tests {
         let result = list.len();
 
         // Assert
+        assert!(list.is_empty());
         assert_eq!(result, 0);
     }
 
@@ -210,6 +211,7 @@ mod tests {
         let result = list.len();
 
         // Assert
+        assert!(!list.is_empty());
         assert_eq!(result, 2);
     }
 
@@ -244,6 +246,36 @@ mod tests {
         // Assert
         assert_eq!(list.len(), 3);
         assert_eq!(result, Some(&1));
+    }
+
+    #[test]
+    fn peek_mut() {
+        // Arrange
+        let mut list = SinglyLinkedList::new();
+        let n1 = Node::new(1);
+        let n2 = Node::new(2);
+
+        list.push_front(Box::new(n2));
+        list.push_front(Box::new(n1));
+
+        // Act
+        let result = list.peek_mut().unwrap();
+        *result = 10;
+
+        // Assert
+        assert_eq!(list.peek(), Some(&10));
+    }
+
+    #[test]
+    fn peek_mut_empty_list() {
+        // Arrange
+        let mut list = SinglyLinkedList::<i32>::new();
+
+        // Act
+        let result = list.peek_mut();
+
+        // Assert
+        assert_eq!(result, None);
     }
 
     #[test]
